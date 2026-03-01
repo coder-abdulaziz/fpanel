@@ -1,0 +1,28 @@
+[Unit]
+Description=FPANEL Host Control Agent
+Documentation=https://github.com/coder-abdulaziz/fpanel
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/usr/local/fpanel/agent
+ExecStart=/usr/bin/python3 /usr/local/fpanel/agent/hostctl.py
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fpanel-agent
+
+# Security settings
+NoNewPrivileges=false
+PrivateTmp=true
+ProtectSystem=no
+ProtectHome=no
+ReadWritePaths=/var/www /etc/nginx /etc/php /etc/bind /var/log/fpanel /run /usr/local/fpanel
+
+[Install]
+WantedBy=multi-user.target
